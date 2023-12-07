@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script>
+    const ROOM_ID = "<%= roomId %>"
+  </script>
+  <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script src="script.js" defer></script>
+  <title>Document</title>
+  <style>
+    #video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 300px);
+      grid-auto-rows: 300px;
+    }
+    
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  
+    .none {
+        -webkit-filter: none;
+        filter: none;
+    }
+
+    .blur {
+        -webkit-filter: blur(3px);
+        filter: blur(3px);
+    }
+
+    .grayscale {
+        -webkit-filter: grayscale(1);
+        filter: grayscale(1);
+      }
+
+    .invert {
+      -webkit-filter: invert(1);
+      filter: invert(1);
+    }
+
+    .sepia {
+      -webkit-filter: sepia(1);
+      filter: sepia(1);
+    }
+
+    button#snapshot {
+      margin: 0 10px 25px 0;
+      width: 110px;
+    }
+
+    video {
+      object-fit: cover;
+    }
+
+    button {
+      margin: 0 3px 10px 0;
+      padding-left: 2px;
+      padding-right: 2px;
+      width: 99px;
+    }
+
+    button:last-of-type {
+      margin: 0;
+    }
+
+    p.borderBelow {
+      margin: 0 0 20px 0;
+      padding: 0 0 20px 0;
+    }
+
+    video {
+      vertical-align: top;
+      --width: 25vw;
+      width: var(--width);
+      height: calc(var(--width) * 0.5625);
+    }
+
+    video:last-of-type {
+      margin: 0 0 20px 0;
+    }
+
+    video#gumVideo {
+      margin: 0 20px 20px 0;
+    }
+  </style>
+
+</head>
+<body>
+  <div id="video-grid"></div>
+  <label for="filter">Filter: </label>
+  <select id="filter">
+      <option value="none">None</option>
+      <option value="blur">Blur</option>
+      <option value="grayscale">Grayscale</option>
+      <option value="invert">Invert</option>
+      <option value="sepia">Sepia</option>
+  </select>
+
+  <button id="hang-up">Hang up</button>
+
+  <canvas></canvas>
+</body>
+</html>
