@@ -7,6 +7,9 @@ const myPeer = new Peer(undefined, {
 const myVideo = document.createElement('video')
 
 const filterSelect = document.querySelector('select#filter');
+const chatContainer = document.getElementById('chat-container')
+const chatInput = document.getElementById('chat-input')
+const usernameInput = document.getElementById('username-input')
 //const hangupButton = document.getElementById('hangupButton');
 //hangupButton.disabled = true;
 
@@ -39,6 +42,22 @@ navigator.mediaDevices.getUserMedia({
 
 socket.on('user-disconnected', userId => {
   if (peers[userId]) peers[userId].close()
+})
+//chat
+chatInput.addEventListener('keydown', event => {
+  if (event.key === 'Enter') {
+    event.preventDefault()
+    const message = chatInput.value
+    chatInput.value = ''
+    const username = usernameInput.value
+    socket.emit('send-chat-message', { message, username })
+  }
+})
+
+socket.on('chat-message', data => {
+  const messageElement = document.createElement('div')
+  messageElement.innerText = `${data.username}: ${data.message}`
+  chatContainer.append(messageElement)
 })
 
 myPeer.on('open', id => {
@@ -73,5 +92,7 @@ function addVideoStream(video, stream) {
   videoGrid.append(video)
 }
 
-//-------------------------------------------------------------------------------------
 
+
+
+//-------------------------------------------------------------------------------------
