@@ -24,7 +24,17 @@ io.on('connection', socket => {
     socket.on('send-chat-message', data => {
       io.emit('chat-message', data); 
     });
-  
+
+    socket.on('share-screen', () => {
+      socket.to(roomId).broadcast.emit('user-shared-screen', userId);
+    });
+    socket.on('stop-share-screen', () => {
+      socket.to(roomId).broadcast.emit('user-stopped-screen', userId);
+    });
+    
+    socket.on('send-snapshot', data => {
+      io.emit('snapshot', data);
+    });
 
     socket.on('disconnect', () => {
       socket.to(roomId).broadcast.emit('user-disconnected', userId)
