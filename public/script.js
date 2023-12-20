@@ -13,7 +13,7 @@ const sharescrn = document.getElementById('screen-share-button');
 const toggleSourceButton = document.getElementById('toggle-source-button');
 const sscrnvideo=document.getElementById('sscrnvideo');
 const audioButton = document.getElementById('sound_bar');  
-
+const hangupButton = document.getElementById('hang-up');
 
  
 let cameraStream;
@@ -80,7 +80,6 @@ function connectToNewUser(userId, stream) {
   if (numPeers >= 4){
     return;
   }
-
   const call = myPeer.call(userId, stream);
   const video = document.createElement('video');
   video.id = `video-${userId}`;
@@ -364,3 +363,10 @@ function handleLogin(username, roomUUID) {
   window.location.href = "/"+roomUUID;
 }
 //----------------------------------------------------------------------------------------------
+//hungout button
+hangupButton.addEventListener('click', () => {
+  // Disconnect the current peer
+  myPeer.disconnect();
+  // Redirect to home page
+  window.location.href = "/";
+});
