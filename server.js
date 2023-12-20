@@ -6,38 +6,55 @@ const { v4: uuidV4 } = require('uuid')
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
+app.use(express.urlencoded({ extended: true })) 
 
 
+
+//----------------------------------------------------------------------------------------------
 app.get('/', (req, res) => {
-  res.redirect(`/${uuidV4()}`)
-})
+  res.render('login');
+});
+//----------------------------------------------------------------------------------------------
+
+
+app.post('/room', (req, res) => {
+  const roomUUID = uuidV4();
+  res.redirect(`/${roomUUID}`);
+});
 
 app.get('/:room', (req, res) => {
-  res.render('room', { roomId: req.params.room })
+  const roomUUID = req.params.room;
+  res.render('room', { roomId: req.params.room, roomUUID: roomUUID });
 })
 
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId)
     socket.to(roomId).broadcast.emit('user-connected', userId)
+    socket.to(roomId).broadcast.emit('user-connected-ss', userId)
 
     socket.on('send-chat-message', data => {
-      io.emit('chat-message', data); 
+      io.emit('chat-message', data);
     });
 
-    socket.on('share-screen', () => {
-      socket.to(roomId).broadcast.emit('user-shared-screen', userId);
+
+
+    //sounbar------------
+    socket.on('send-audio-message', adata => {
+      io.emit('audio-message', adata); 
     });
-    socket.on('stop-share-screen', () => {
-      socket.to(roomId).broadcast.emit('user-stopped-screen', userId);
-    });
-    
+
+    //-------------------
+
     socket.on('send-snapshot', data => {
       io.emit('snapshot', data);
     });
 
+    //---------------------------
+
     socket.on('disconnect', () => {
       socket.to(roomId).broadcast.emit('user-disconnected', userId)
+      socket.to(roomId).broadcast.emit('user-disconnected-ss', userId)
     })
   })
 })

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>login</title>
+        <script src="/socket.io/socket.io.js"></script>
+        <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/uuid/8.3.2/uuid.min.js"></script>
+        <script src="script.js" defer></script>
+    </head>
+
+
+    <body>
+
+        <h2>LOGIN PAGE</h2>
+
+
+        <div id="login-container">
+            <h3>Login</h3>
+            <form id="login-form">
+                <label for="username">Username:</label><br>
+                <input type="text" id="username" name="username" required><br>
+                <input type="submit" value="Call">
+            </form>
+        </div>
+        
+        <script>
+                document.getElementById('login-form').addEventListener('submit', function(event) {
+                event.preventDefault();
+                var username = document.getElementById('username').value;
+                handleLogin(username);
+                });
+            
+        </script>
+
+    </body>
+
+
+
+
+
+</html>

@@ -12,68 +12,234 @@
   <script src="script.js" defer></script>
   <title>Document</title>
   <style>
-    #video-grid {
+    body {
+      margin-top: 0px;
+      background: url('https://unblast.com/wp-content/uploads/2021/01/Space-Background-Image-8.jpg') center/cover no-repeat;
+      color: #fff;
+      font-family: Arial, sans-serif;
       display: grid;
-      grid-template-columns: repeat(auto-fill, 300px);
-      grid-auto-rows: 300px;
+      grid-template-rows: 0.2fr 1fr 1fr 1fr;
+      grid-template-areas:
+        "header header header header"
+        "video video video chat"
+        "video video video chat"
+        "video video video chat";
+      height: 100vh;
     }
-    
+
+    #d1 {
+      grid-area: video;
+      display: flex;
+      flex-direction: column;
+      /*justify-content: space-between; */
+      align-items: center;
+      text-align: center;
+    }
+
+    #video-grid {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      box-sizing: border-box;
+    }
+
     video {
-      width: 100%;
-      height: 100%;
+      width: 300px;
+      height: 300px;
       object-fit: cover;
-    }
-  
-    .none {
-        -webkit-filter: none;
-        filter: none;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    .blur {
-        -webkit-filter: blur(3px);
-        filter: blur(3px);
+    #username-input,
+    #filter,
+    #hang-up,
+    #share-button,
+    #toggle-camera-btn,
+    #toggle-mic-btn,
+    #snapshot-button{
+      margin-top: 16px;
+      padding: 8px 16px;
+      font-size: 16px;
+      cursor: pointer;
     }
 
-    .grayscale {
-        -webkit-filter: grayscale(1);
-        filter: grayscale(1);
-      }
-
-    .invert {
-      -webkit-filter: invert(1);
-      filter: invert(1);
+    #d2 {
+      width: 400px;
+      grid-area: chat;
+      display: flex;
+      flex-direction: column;
+      align-items: center ;
     }
 
-    .sepia {
-      -webkit-filter: sepia(1);
-      filter: sepia(1);
+    
+
+    #chat-container {
+      background-color: black;
+      flex: 1;
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      max-height: 80%;
+      width: 100%;
+      overflow-y: auto;
+      word-wrap: break-word; /* spane oi grammes an einai megales sto chat */
     }
 
+    #chat-input {
+      margin-top: 8px;
+      padding: 8px;
+      width: 109%;
+      box-sizing: border-box;
+    }
+
+    
+    #hang-up,
+    #share-button,
+    #toggle-camera-btn,
+    #toggle-mic-btn,
+    #snapshot-button
+    {
+      margin-top: 16px;
+      padding: 6px; /* Adjust the padding for button size */
+      font-size: 12px; /* Adjust the font size for button size */
+      cursor: pointer;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.3);
+      border: none;
+      color: #fff;
+      margin-right: 8px;
+      width:80px;
+      height:80px;
+    }
+
+
+    #buttons
+    {
+      display: flex;
+      flex-direction: row;
+    }
+
+
+    #v
+    {
+      display:flex;
+      flex-direction: row;
+    }
+
+    body h1   /* xrisi tou child combinator kathws to h1 sto dom tree tha einai paidi tou header*/
+    {
+      
+      grid-area: header;
+      color: black;  /*ruthmizoume to xrwma */
+      font-size: 35px;       /*ruthmizoume to megethos ths grammatoseiras*/
+      font-family: Arial, Helvetica, sans-serif;   /*epilegoume thn grammatoseira*/
+      text-align: center;
+      background-color: rgb(53, 53, 189);
+      height: 80px;
+      margin-top: 0px;
+    }
+
+    #d2 input 
+    {
+      border-radius: 8px;
+    }
+
+
+    #buttons #hang-up
+    {
+        background-color: rgb(175, 25, 25);
+    }
+
+    #sound-bar {
+      width: 300px;
+      height: 20px;
+      background-color: #ccc;
+      margin-top: 20px;
+    }
+
+    #soundbtn
+    {
+      display: flex;
+      flex-direction: row;
+    }
+
+    #play-button,
+    #play-button2,
+    #play-button3
+    {
+
+      margin-top: 16px;
+      padding: 6px; /* Adjust the padding for button size */
+      font-size: 12px; /* Adjust the font size for button size */
+      cursor: pointer;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.3);
+      border: none;
+      color: #fff;
+      margin-right: 8px;
+      width:80px;
+      height:80px;
+    }
+ 
     
   </style>
-
+ 
 </head>
+
 <body>
-  <div id="video-grid"></div>
-  <div id="username-input"></div>
-  <input id="username" type="text" placeholder="Enter your name">
-  <label for="filter">Filter: </label>
-  <select id="filter">
-      <option value="none">None</option>
-      <option value="blur">Blur</option>
-      <option value="grayscale">Grayscale</option>
-      <option value="invert">Invert</option>
-      <option value="sepia">Sepia</option>
+
+<h1>CALL APP</h1>
+<div id="d1">
+
+  
+  
+  <div id="v">
+    <div id="video-grid"></div>
+  </div>
+  
+  <div id="buttons">
+    <button id="hang-up">Hang up</button>
+    <button id="share-button">Share</button>
+    <button id="snapshot-button">Snap Photo</button>
+    <button id="toggle-camera-btn">Disable Camera</button>
+    <button id="toggle-mic-btn">Disable Microphone</button>
+    <button id="screen-share-button">Share Screen</button>
+  </div>
+
+  <select id="filter-select">
+    <option value="'none'">None</option>
+    <option value="grayscale(100%)">Grayscale</option>
+    <option value="sepia(100%)">Sepia</option>
   </select>
-  <div id="screen-video-grid"></div>
-  <button id="hang-up">Hang up</button>
-  <button id="share-button">Share</button>
-  <!-- snap shot button-->
-  <button id="snapshot-button">Snap Photo</button>
-  <button id="toggle-camera-btn">Disable Camera</button>
-  <button id="toggle-mic-btn">Disable Microphone</button>
-  <button id="share-screen-btn">Share Screen</button>
+
+  <div id="soundbtn">
+    <button id="play-button">sound1</button>
+    <button id="play-button2">sound2</button>
+    <button id="play-button3">sound3</button>
+  </div>
+
+</div>
+
+
+<div id="d2">
   <div id="chat-container"></div>
   <input id="chat-input" type="text" placeholder="Type a message...">
+</div>
+
+
+  
+<input type="range" min="20" max="20000" step="1" value="1000" id="frequency-bar">
+<div id="sscrnvideo"></div>
+
+
+
+
 </body>
 </html>
