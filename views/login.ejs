@@ -20,19 +20,14 @@
         <div id="login-container">
             <h3>Login</h3>
             <form id="login-form">
-                <label for="username">Username:</label><br>
-                <input type="text" id="username" name="username" required><br>
                 <input type="submit" value="Call">
             </form>
         </div>
-        
         <script>
                 document.getElementById('login-form').addEventListener('submit', function(event) {
                 event.preventDefault();
-                var username = document.getElementById('username').value;
-                handleLogin(username);
+                handleLogin();
                 });
-            
         </script>
 
     </body>

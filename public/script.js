@@ -9,56 +9,31 @@ const chatContainer = document.getElementById('chat-container')
 const chatInput = document.getElementById('chat-input')
 const shareButton = document.getElementById('share-button');
 const snapshotButton = document.getElementById('snapshot-button');
-const sharescrn = document.getElementById('screen-share-button');
+//const sharescrn = document.getElementById('screen-share-button');
 const toggleSourceButton = document.getElementById('toggle-source-button');
-const sscrnvideo=document.getElementById('sscrnvideo');
+//const sscrnvideo=document.getElementById('sscrnvideo');
 const audioButton = document.getElementById('sound_bar');  
 const hangupButton = document.getElementById('hang-up');
+var usernameInput = '';
+const usernameButton = document.getElementById('username-button');
 
- 
+
 let cameraStream;
  
- // Create an audio context
-let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-let biquadFilter = audioContext.createBiquadFilter();
-biquadFilter.type = "lowpass";
-biquadFilter.frequency.value = 1000;
-
-// Get the sound bar
-let volumeBar = document.getElementById('frequency-bar');
-
-// Update the gain value when the sound bar changes
-volumeBar.addEventListener('input', function() {
-  biquadFilter.frequency.value = this.value;
-});
-
-
-//set username 
-//let username = prompt("Please enter your username");
-//usernameInput.value = username;
 myVideo.muted = true
 const peers = {}
 navigator.mediaDevices.getUserMedia({
   video: true,
   audio: true
 }).then(stream => {
-    // Create a source node from the stream
-    let sourceNode = audioContext.createMediaStreamSource(stream);
     cameraStream = stream;
-
-    // Connect the source node to the gain node
-    sourceNode.connect(biquadFilter);
-  
-    // Connect the gain node to the destination so we can hear the sound
-    biquadFilter.connect(audioContext.destination);
   addVideoStream(myVideo, stream)
   myPeer.on('call', call => {
     call.answer(stream)
     const video = document.createElement('video')
     call.on('stream', userVideoStream => {
       addVideoStream(video, userVideoStream)
-    })
+    });
   })
   socket.on('user-connected', userId => {
     connectToNewUser(userId, stream)
@@ -82,7 +57,6 @@ function connectToNewUser(userId, stream) {
   }
   const call = myPeer.call(userId, stream);
   const video = document.createElement('video');
-  video.id = `video-${userId}`;
   call.on('stream', userVideoStream => {
     addVideoStream(video, userVideoStream);
   });
@@ -110,7 +84,7 @@ chatInput.addEventListener('keydown', event => {
     event.preventDefault()
     const message = chatInput.value
     chatInput.value = ''
-    const username = usernameInput.value
+    const username = usernameInput; 
     const timestamp = new Date().toLocaleTimeString(); // Get current time
     socket.emit('send-chat-message', { message, username, timestamp })
   }
@@ -173,7 +147,7 @@ snapshotButton.addEventListener('click', () => {
   context.filter = filterSelect.value;
   context.drawImage(myVideo, 0, 0, canvas.width, canvas.height);
   const snapshot = canvas.toDataURL('image/png');
-  const username = usernameInput.value;
+  const username = usernameInput;
   socket.emit('send-snapshot', { snapshot, username });
 });
 
@@ -211,8 +185,60 @@ function toggleMicrophone(){
     toggleMicBtn.textContent = isMicEnabled ? 'Disable Microphone' : 'Enable Microphone';
   }
 }
+//toggle source
+let isScreenShared = false;
 
-//screen share
+toggleSourceButton.addEventListener('click', toggleSource);
+
+function toggleSource() {
+  if (cameraStream) {
+    const videoTracks = cameraStream.getVideoTracks();
+
+    videoTracks.forEach(track => {
+      track.enabled = !track.enabled;
+    });
+
+    if (isScreenShared) {
+      // Stop sharing screen and switch back to camera
+      navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false
+      }).then(stream => {
+        switchStream(stream);
+      });
+    } else {
+      // Share screen
+      navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: false
+      }).then(stream => {
+        switchStream(stream);
+      });
+    }
+    isScreenShared = !isScreenShared;
+  }
+}
+
+function switchStream(stream) {
+  cameraStream = stream;
+  myVideo.srcObject = stream;
+  myVideo.play();
+
+  for (const peer in peers) {
+    let call = peers[peer]; // Assuming peers[peer] is a call object
+
+    let newVideoTrack = stream.getVideoTracks()[0];
+
+    call.peerConnection.getSenders().forEach(function(sender) {
+      if (sender.track.kind === newVideoTrack.kind) {
+        sender.replaceTrack(newVideoTrack);
+      }
+    });
+  }
+}
+
+
+/*screen share
 
 const mySSPeer = new Peer(undefined, {
   host: '/',
@@ -264,7 +290,7 @@ function connectToNewSS(userId, stream) {
 }
 
 
-
+*/
 
 
 
@@ -350,23 +376,24 @@ function updateSoundBar(audioContext, duration) {
 
 //----------------------------------------------------------------------------------------------
 
-function handleLogin(username, roomUUID) {
-  let usernameInput = document.getElementById('username');
-  if (!username) {
-    alert('Please enter a username.');
-    return;
-  }
-  if (!roomUUID) {
-    roomUUID = uuid.v4();
-  }
-  usernameInput.value = username;
+function handleLogin() {
+  var roomUUID = uuid.v4();
   window.location.href = "/"+roomUUID;
 }
-//----------------------------------------------------------------------------------------------
+//------------------------------------------- ---------------------------------------------------
 //hungout button
 hangupButton.addEventListener('click', () => {
   // Disconnect the current peer
   myPeer.disconnect();
   // Redirect to home page
   window.location.href = "/";
+});
+//set username 
+usernameButton.addEventListener('click', () => {
+  let username = prompt("Please enter your username");
+  if (!username) {
+    alert('Please enter a username.');
+    return;
+  }
+  usernameInput = username;
 });

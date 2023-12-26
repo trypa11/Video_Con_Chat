@@ -31,7 +31,7 @@ io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId)
     socket.to(roomId).broadcast.emit('user-connected', userId)
-    socket.to(roomId).broadcast.emit('user-connected-ss', userId)
+    
 
     socket.on('send-chat-message', data => {
       io.emit('chat-message', data);
@@ -50,11 +50,11 @@ io.on('connection', socket => {
       io.emit('snapshot', data);
     });
 
+
     //---------------------------
 
     socket.on('disconnect', () => {
       socket.to(roomId).broadcast.emit('user-disconnected', userId)
-      socket.to(roomId).broadcast.emit('user-disconnected-ss', userId)
     })
   })
 })
