@@ -27,6 +27,7 @@ app.get('/:room', (req, res) => {
   res.render('room', { roomId: req.params.room, roomUUID: roomUUID });
 })
 
+
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId)
@@ -45,6 +46,7 @@ io.on('connection', socket => {
     });
 
     //-------------------
+    
 
     socket.on('send-snapshot', data => {
       io.emit('snapshot', data);

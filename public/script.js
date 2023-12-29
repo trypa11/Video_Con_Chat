@@ -9,10 +9,10 @@ const chatContainer = document.getElementById('chat-container')
 const chatInput = document.getElementById('chat-input')
 const shareButton = document.getElementById('share-button');
 const snapshotButton = document.getElementById('snapshot-button');
-//const sharescrn = document.getElementById('screen-share-button');
+
 const toggleSourceButton = document.getElementById('toggle-source-button');
 //const sscrnvideo=document.getElementById('sscrnvideo');
-const audioButton = document.getElementById('sound_bar');  
+//const audioButton = document.getElementById('sound_bar');  
 const hangupButton = document.getElementById('hang-up');
 var usernameInput = '';
 const usernameButton = document.getElementById('username-button');
@@ -21,7 +21,7 @@ const usernameButton = document.getElementById('username-button');
 let cameraStream;
  
 myVideo.muted = true
-const peers = {}
+let peers = {}
 navigator.mediaDevices.getUserMedia({
   video: true,
   audio: true
@@ -29,12 +29,17 @@ navigator.mediaDevices.getUserMedia({
     cameraStream = stream;
   addVideoStream(myVideo, stream)
   myPeer.on('call', call => {
+    peers[call.peer] = call;
     call.answer(stream)
     const video = document.createElement('video')
     call.on('stream', userVideoStream => {
       addVideoStream(video, userVideoStream)
     });
+    call.on("close", () => {
+      video.remove();
   })
+  })
+
   socket.on('user-connected', userId => {
     connectToNewUser(userId, stream)
   })
@@ -66,6 +71,7 @@ function connectToNewUser(userId, stream) {
   });
   peers[userId] = call;
   numPeers++; 
+  
 }
  
 function addVideoStream(video, stream) {
@@ -225,7 +231,7 @@ function switchStream(stream) {
   myVideo.play();
 
   for (const peer in peers) {
-    let call = peers[peer]; // Assuming peers[peer] is a call object
+    let call = peers[peer]; 
 
     let newVideoTrack = stream.getVideoTracks()[0];
 
@@ -397,3 +403,4 @@ usernameButton.addEventListener('click', () => {
   }
   usernameInput = username;
 });
+
