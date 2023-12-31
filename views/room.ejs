@@ -187,8 +187,10 @@
       width:80px;
       height:80px;
     }
- 
-    
+
+    canvas {
+      border: 1px solid white;
+    }   
   </style>
  
 </head>
@@ -213,6 +215,7 @@
     <!--button id="screen-share-button">Share Screen</button-->
     <button id="toggle-source-button">Toggle Source</button>
     <button id="username-button">Set Username</button>
+    <button id="game-button">Game</button> 
   </div>
 
   <select id="filter-select">
@@ -230,6 +233,8 @@
     <button id="play-button">sound1</button>
     <button id="play-button2">sound2</button>
     <button id="play-button3">sound3</button>
+    <canvas width="400" height="400" id="game"></canvas>
+    <button id="restart-button" style="display: none;">Restart Game</button>
   </div>
 
 </div>
@@ -239,7 +244,6 @@
   <div id="chat-container"></div>
   <input id="chat-input" type="text" placeholder="Type a message...">
 </div>
-
 
 </body>
 </html>

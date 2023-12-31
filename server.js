@@ -52,6 +52,9 @@ io.on('connection', socket => {
       io.emit('snapshot', data);
     });
 
+    socket.on('send-score', data => {
+      io.emit('score', data);
+    });
 
     //---------------------------
 
