@@ -11,8 +11,7 @@ const shareButton = document.getElementById('share-button');
 const snapshotButton = document.getElementById('snapshot-button');
 
 const toggleSourceButton = document.getElementById('toggle-source-button');
-//const sscrnvideo=document.getElementById('sscrnvideo');
-//const audioButton = document.getElementById('sound_bar');  
+//const sscrnvideo=document.getElementById('sscrnvideo'); 
 const hangupButton = document.getElementById('hang-up');
 var usernameInput = '';
 const usernameButton = document.getElementById('username-button');
@@ -91,7 +90,7 @@ chatInput.addEventListener('keydown', event => {
     const message = chatInput.value
     chatInput.value = ''
     const username = usernameInput; 
-    const timestamp = new Date().toLocaleTimeString(); // Get current time
+    const timestamp = new Date().toLocaleTimeString(); 
     socket.emit('send-chat-message', { message, username, timestamp })
   }
 })
@@ -147,8 +146,8 @@ snapshotButton.addEventListener('click', () => {
   const canvas = document.createElement('canvas');
   //canvas.width = myVideo.videoWidth;
   //canvas.height = myVideo.videoHeight;
-  const snapshotWidth = 200; // Adjust this value as needed
-  const snapshotHeight = 150; // Adjust this value as needed
+  const snapshotWidth = 200; 
+  const snapshotHeight = 150; 
   canvas.width = snapshotWidth;
   canvas.height = snapshotHeight;
   const context = canvas.getContext('2d');
@@ -207,7 +206,7 @@ function toggleSource() {
     });
 
     if (isScreenShared) {
-      // Stop sharing screen and switch back to camera
+      // camera
       navigator.mediaDevices.getUserMedia({
         video: true,
         audio: false
@@ -594,6 +593,7 @@ gameButton.addEventListener('click', () => {
   } else {
     // Hide the game board
     gameisrunning = false;
+    restartButton.style.display = 'none';
     canvas.style.display = 'none';
     gameStarted = false;
   }
