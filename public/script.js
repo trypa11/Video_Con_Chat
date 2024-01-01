@@ -9,9 +9,7 @@ const chatContainer = document.getElementById('chat-container')
 const chatInput = document.getElementById('chat-input')
 const shareButton = document.getElementById('share-button');
 const snapshotButton = document.getElementById('snapshot-button');
-
 const toggleSourceButton = document.getElementById('toggle-source-button');
-//const sscrnvideo=document.getElementById('sscrnvideo'); 
 const hangupButton = document.getElementById('hang-up');
 var usernameInput = '';
 const usernameButton = document.getElementById('username-button');
@@ -144,8 +142,6 @@ const filterSelect = document.getElementById('filter-select');
 //snapshot button
 snapshotButton.addEventListener('click', () => {
   const canvas = document.createElement('canvas');
-  //canvas.width = myVideo.videoWidth;
-  //canvas.height = myVideo.videoHeight;
   const snapshotWidth = 200; 
   const snapshotHeight = 150; 
   canvas.width = snapshotWidth;
@@ -243,62 +239,6 @@ function switchStream(stream) {
     });
   }
 }
-
-
-/*screen share
-
-const mySSPeer = new Peer(undefined, {
-  host: '/',
-  port: '3001'
-})
-const ShareScreen = document.createElement('video')
-let sspeers = {}
-sharescrn.addEventListener('click', () => {
-navigator.mediaDevices.getDisplayMedia({
-  video: true,
-  audio: true
-}).then(stream => {
-  addSSVideoStream(ShareScreen, stream)
-  mySSPeer.on('call', sscrean => {
-    sscrean.answer(stream)
-    const video = document.createElement('video');
-    sscrean.on('stream', userVideoStream => {
-      addSSVideoStream(video, userVideoStream);
-    });
-  })
-  socket.on('user-connected-ss', userId => {
-    connectToNewSS(userId, stream)
-  })
-})
-})
-
-
-socket.on('user-disconnected-ss', userId => {
-  if (sspeers[userId]) {
-    sspeers[userId].close()
-  }
-})
-
-mySSPeer.on('open', id => {
-  socket.emit('join-room-ss', ROOM_ID, id)
-})
-
-function connectToNewSS(userId, stream) {
-  const call = mySSPeer.call(userId, stream);
-  sspeers[userId] = call;
-  }
-   
-  function addSSVideoStream(video, stream) {
-    video.srcObject = stream;
-    video.addEventListener('loadedmetadata', () => {
-      video.play();
-    });
-    sscrnvideo.append(video);
-}
-
-
-*/
-
 
 
 //-------------------------------------soundbar
@@ -449,7 +389,7 @@ function loop() {
   requestAnimationFrame(loop);
 
   // slow game loop to 15 fps instead of 60 (60/15 = 4)
-  if (++count < 8) {
+  if (++count < 9) {
     return;
   }
 
@@ -521,27 +461,27 @@ function loop() {
 // listen to keyboard events to move the snake
 document.addEventListener('keydown', function(e) {
   // prevent snake from backtracking on itself by checking that it's
-  // not already moving on the same axis (pressing left while moving
-  // left won't do anything, and pressing right while moving left
+  // not already moving on the same axis (pressing A while moving
+  // left won't do anything, and pressing D while moving left
   // shouldn't let you collide with your own body)
 
-  // left arrow key
-  if (e.which === 37 && snake.dx === 0) {
+  // A key
+  if (e.which === 65 && snake.dx === 0) {
     snake.dx = -grid;
     snake.dy = 0;
   }
-  // up arrow key
-  else if (e.which === 38 && snake.dy === 0) {
+  // W key
+  else if (e.which === 87 && snake.dy === 0) {
     snake.dy = -grid;
     snake.dx = 0;
   }
-  // right arrow key
-  else if (e.which === 39 && snake.dx === 0) {
+  // D key
+  else if (e.which === 68 && snake.dx === 0) {
     snake.dx = grid;
     snake.dy = 0;
   }
-  // down arrow key
-  else if (e.which === 40 && snake.dy === 0) {
+  // S key
+  else if (e.which === 83 && snake.dy === 0) {
     snake.dy = grid;
     snake.dx = 0;
   }
