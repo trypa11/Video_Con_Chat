@@ -260,7 +260,7 @@ const playButton3 = document.getElementById('play-button3');
 
 const soundFilePath2 = '../aa.mp3'; // Replace with the actual path
 
-const soundFilePath3 = '../simp-over-girls-on-discord.mp3'; // Replace with the actual path
+const soundFilePath3 = '../andrew-tate-theme-song_5Tk4Ez5.mp3'; // Replace with the actual path
 
 
 playButton2.addEventListener('click', () => {
